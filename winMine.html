@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>winMine</title>
+    <script src="http://libs.baidu.com/jquery/1.9.1/jquery.js"></script>
+    <script src="winMine.js"></script>
+</head>
+<style>
+    table{
+        border-collapse:collapse;
+        margin:0 auto;
+    }
+    #content{
+        background-color: #656565;
+        overflow: hidden;
+        padding:50px;
+        text-align: center;
+    }
+    .shot {
+        background-image: url('image/swiper.png');
+        background-size: 50% 50%;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    table tr td,table tr{
+        width:40px;
+        height: 40px;
+        color: #8c96a0;
+        text-shadow: 1px 1px 1px #fff;
+        border: 1px solid #dce1e6!important;
+        box-shadow: 0 1px 2px #fff inset,0 -1px 0 #a8abae inset;
+        background: -webkit-linear-gradient(top,#f2f3f7,#e4e8ec);
+        text-align: center;
+    }
+
+</style>
+<body>
+<div id="content">
+    <table id="table" border=1 style='border-collapse:collapse;'></table>
+</div>
+<script>
+    $.winMine({
+        'rows' : '9',
+        'cells' : '9',
+        'mineNum' : '10'
+    });
+</script>
+</body>
+</html>
