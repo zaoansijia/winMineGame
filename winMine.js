@@ -18,12 +18,13 @@
         init: function ( setting ) {
             this.setting = $.extend( {}, $.winMine.defaults, setting );
             $.mine=this;
-            rows = this.setting.rows;
-            cells = this.setting.cells;
-            mNum = this.setting.mineNum;
+            rows = parseInt(this.setting.rows);
+            cells = parseInt(this.setting.cells);
+            mNum = parseInt(this.setting.mineNum);
             board=[];
+
             if(rows<9||cells<9){
-                alert('最少行列为9x9,请从新设置');
+                alert('Minimum ranks of 9x9, please re-set!!');
                 return;
             }
             this.setTable( rows, cells, this.setting.content );
@@ -32,9 +33,39 @@
                 $.mine.clickFun($(this));
             });
         },
+
+        setCoordinate : function ( x,y ) {
+            var sqr=[
+                {'x':(x-1),'y':(y-1)},//top_left
+                {'x':(x-1),'y':y},//top_middle
+                {'x':(x-1),'y':(y+1)},//top_right
+                {'x':x,'y':(y-1)},//middle_left
+                {'x':x,'y':(y+1)},//middle_right
+                {'x':(x+1),'y':(y-1)},//bottom_left
+                {'x':(x+1),'y':y},//bottom_middle
+                {'x':(x+1),'y':(y+1)},//bottom_right
+
+            ];
+            return sqr;
+        },
+
+        setTable : function (row,cell,cont) {
+            var table='';
+
+            for( var i=1 ; i<=row ; i++ ) {
+                table += "<tr>";
+                for( var j=1 ; j<=cell ; j++ ) {
+                    table += "<td id="+i+'_'+j+"></td>";
+                }
+                table += "</tr>"
+            }
+            $('#'+cont).append(table);
+
+        },
+
         setMine : function ( row,cell,mNum ) {
             var num=0;
-            //declare a array to record the 'mine' and init the mine cxt '0'
+            //declare a array to record the 'mine' and init the mine txt '0'
             for( var i=0 ; i<(row+2) ; i++ ) {
                 board[i]=[];
                 for( var j=0; j<(cell+2); j++ ) {
@@ -53,17 +84,17 @@
             } while(num<=mNum);
 
             //show the number of mine
-            for( var i=1; i<(row-1); i++ ) {
-                for( var j=1; j<(cell-1); j++ ) {
+            for( var i=1; i<(row+1); i++ ) {
+                for( var j=1; j<(cell+1); j++ ) {
 
-                    var nums=0//to account the number of 'mine'
                     if( board[i][j]!='mine' ) {
+                        var counter=0//to account the number of 'mine'
                         var sqr=this.setCoordinate(i,j);
                         for( var k=0; k<sqr.length; k++ ) {
-                            if( board[sqr[k].x][sqr[k].y]=='mine') nums+=1;
+                            if( board[sqr[k].x][sqr[k].y]=='mine') counter+=1;
                         }
 
-                        board[i][j]=nums;
+                        board[i][j]=counter;
                     }
                 }
             }
@@ -103,6 +134,7 @@
 
             if(board[x][y]==0) this.showText(obj);
         },
+
         showText : function (obj) {
 
             var data = obj.attr('id').split('_');
@@ -121,38 +153,13 @@
                 }
             }
         },
+
         scanAgain : function (obj) {
             if( obj.text()== '0' ) {
                 this.showText(obj);
             }
-        },
-        setTable : function (row,cell,cont) {
-            var table='';
-
-            for( var i=1 ; i<=row ; i++ ) {
-                table += "<tr>";
-                for( var j=1 ; j<=cell ; j++ ) {
-                    table += "<td id="+i+'_'+j+"></td>";
-                }
-                table += "</tr>"
-            }
-            $('#'+cont).append(table);
-
-        },
-        setCoordinate : function ( x,y ) {
-            var sqr=[
-                {'x':(x-1),'y':(y-1)},//top_left
-                {'x':(x-1),'y':y},//top_middle
-                {'x':(x-1),'y':(y+1)},//top_right
-                {'x':x,'y':(y-1)},//middle_left
-                {'x':x,'y':(y+1)},//middle_right
-                {'x':(x+1),'y':(y-1)},//bottom_left
-                {'x':(x+1),'y':y},//bottom_middle
-                {'x':(x+1),'y':(y+1)},//bottom_right
-
-            ];
-            return sqr;
         }
+
 
     }
 
